@@ -49,7 +49,7 @@ public class MainServer {
         try {
             System.out.println("Waiting...");
             client = server.accept();
-            System.out.println("Conexão estabelecida \n"  + client.getInetAddress().getHostAddress());
+            System.out.println("Connection established \n"  + client.getInetAddress().getHostAddress());
         } catch (Exception e) {
             System.out.println("Error connecting  \n" + "Log: " + e.getMessage());
             return null;
@@ -62,7 +62,7 @@ public class MainServer {
         try {
             server = new ServerSocket(9876);
         } catch (Exception e) {
-            System.out.println("Erro ao criar servidor na porta 9876 \n"
+            System.out.println("Error creating server \n"
                     + "Log: " + e.getMessage());
             return null;
         }
