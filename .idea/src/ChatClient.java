@@ -11,11 +11,8 @@ public class ChatClient
     {
 
         Scanner consoleIn = new Scanner(System.in);
-        System.out.print("Address: ");
-        String address = consoleIn.nextLine();
-
-        System.out.print("Port: ");
-        int port = Integer.parseInt(consoleIn.nextLine());
+        String address = "localhost";
+        int port = 9876;
 
         System.out.println("Connecting");
         Socket socket = new Socket(address, port);
