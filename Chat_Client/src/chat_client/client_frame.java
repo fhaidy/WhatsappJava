@@ -2,7 +2,14 @@ package chat_client;
 
 import java.net.*;
 import java.io.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class client_frame extends javax.swing.JFrame 
 {
@@ -112,14 +119,11 @@ public class client_frame extends javax.swing.JFrame
                         ta_chat.removeAll();
                         userAdd(data[0]);
                      } 
-                     else if (data[1].equals(disconnect)) 
-                     {
-                         userRemove(data[0]);
-                     } 
+ 
                      else if (data[1].equals(done)) 
                      {
                         writeUsers();
-                        users.clear();
+                       // users.clear();
                      }
                 }
            }catch(Exception ex) { }
@@ -264,9 +268,38 @@ public class client_frame extends javax.swing.JFrame
     }//GEN-LAST:event_b_connectActionPerformed
 
     private void b_disconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_disconnectActionPerformed
+        createNewLog();
         sendDisconnect();
         Disconnect();
     }//GEN-LAST:event_b_disconnectActionPerformed
+
+    private void createNewLog() {
+        try {
+            String fileName = "";
+            Collections.sort(users);
+            for(int i =0; i< users.size(); i++ ){
+                if(i==0)
+                    fileName += users.get(i);
+                else
+                    fileName += "-"+ users.get(i);
+            }
+            Cryptography crypto = new Cryptography(ta_chat.getText());
+            LogController.WriteLog(fileName, crypto.encode());
+            userRemove(tf_username.getText());
+        } catch (IOException ex) {
+            Logger.getLogger(client_frame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(client_frame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(client_frame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(client_frame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(client_frame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(client_frame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void b_sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_sendActionPerformed
         String nothing = "";
